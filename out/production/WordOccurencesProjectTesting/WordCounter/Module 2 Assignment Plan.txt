@@ -1,0 +1,13 @@
+Requirements: 
+The program will need to create files, read files, write text to files, access a web page, and determine what information is relevant on the web page. 
+
+To do this I will execute iterations. I will test each iteration until it is satisfactory. 
+
+Iteration 1
+First I will write a program that reads whatever webpage I give it. 
+
+Iteration 2
+Second I will write a program that processes the webpage text. This will involve removing text that is not desirable. 
+
+Iteration 3
+Once the HTML and needless text has been cleaned, then the application will proceed to count the remaining words. 
