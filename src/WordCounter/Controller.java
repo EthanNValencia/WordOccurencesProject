@@ -50,11 +50,13 @@ public class Controller implements CONSTANTS, Initializable {
 
     /***
      * This method controls GUI functions by disabling the begin button, enabling the clean button, sets the explanation label, and displays the downloaded text to the text area. It calls the method that handles the downloading of the page source.
-     * @param event This event is initiated by the begin button.
      * @throws FileNotFoundException A file not found exception is a critical application failure. The application cannot continue.
      */
-    public void downloadPage(ActionEvent event) throws FileNotFoundException {
-        labelExplain.setText("The text has been downloaded. \nContinue to text normalization.");
+    public void downloadPage() throws FileNotFoundException {
+        labelExplain.setText(
+                "The text has been downloaded.\n" +
+                "Continue to text normalization.\n" +
+                "Use the Clean Text button to continue.");
         beginBtn.setDisable(true);
         WebSaver.writePageToFile();
         String display = displayText(downloadDirectory);
@@ -66,7 +68,10 @@ public class Controller implements CONSTANTS, Initializable {
      * This method controls GUI functions by disabling the clean button, enabling the count button, sets the explanation label, and displays the cleaned/normalized text to the text area. It calls the method that handles the text normalization.
      */
     public void cleanText() {
-        labelExplain.setText("The text has been cleaned. \nContinue by counting the word occurrences.");
+        labelExplain.setText(
+                "The text has been cleaned. \n" +
+                "Continue by inserting, extracting, and displaying the data. \n" +
+                "Continue by clicking the Count Words button.");
         cleanBtn.setDisable(true);
         StringCleaner sc = new StringCleaner();
         try {
@@ -84,7 +89,10 @@ public class Controller implements CONSTANTS, Initializable {
      * @throws FileNotFoundException A file not found exception is a critical application failure. The application cannot continue.
      */
     public void countWords() throws IOException {
-        labelExplain.setText("The words have been counted. \nThis is a list of the words ranked from highest to lowest.");
+        labelExplain.setText(
+                "The words have been counted. \n" +
+                "This is a list of the words ranked from highest to lowest.\n" +
+                "You may re-run the program with the Download HTML button");
         countBtn.setDisable(true);
         WordCounter wc = new WordCounter();
         wc.countTheWords();
@@ -125,7 +133,9 @@ public class Controller implements CONSTANTS, Initializable {
     public void initialize(URL location, ResourceBundle resources){
         cleanBtn.setDisable(true);
         countBtn.setDisable(true);
-        labelExplain.setText("Begin by downloading the web page source document.");
+        labelExplain.setText(
+                "Begin by downloading the web page source document.\n" +
+                        "Click the Download HTML button");
         textArea.setEditable(false);
         textArea.setWrapText(true);
     }
