@@ -51,7 +51,7 @@ public class Connect {
     }
 
     /***
-     * Method that is used to insert a single word into the database table.
+     * Method that is used to insert a single word into the database table. This class is too slow for normal usage.
      * @param wordName This is the name of the word object.
      * @param wordCount This is the count of the word object.
      * @throws Exception I doubt it can throw an exception, but the tutorial told me to keep this here.
@@ -106,19 +106,26 @@ public class Connect {
     }
 
     /***
-     * This method is used to insert the contents of an array list into the database.
+     * This method is used to insert the contents of an array list into the database. Edit: I changed this to use a batch. If I used individual inserts it would take over 20 seconds to run this, but with the batch it's reduced time is around 7 seconds.
      * @param arrayList Requires an ArrayList of words.
      * @throws Exception I doubt it can throw an exception, but the tutorial told me to keep this here.
      */
     public static void writeArrayList(ArrayList<Word> arrayList) throws Exception{
+        Connection con = getConnection();
+        String sql = "INSERT INTO word (word_name, word_count) VALUES(?,?)";
+        PreparedStatement ps = con.prepareStatement(sql);
         Iterator<Word> iterator = arrayList.iterator();
+
         while(iterator.hasNext()){
             Word word = iterator.next();
             try {
-                Connect.insertWord(word.getWordName(), word.getWordCount());
+                ps.setString(1, word.getWordName());
+                ps.setInt(2, word.getWordCount());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //System.out.println(ps.toString());
+            ps.executeUpdate();
         }
     }
 }
