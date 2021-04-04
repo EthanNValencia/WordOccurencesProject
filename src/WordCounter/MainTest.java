@@ -1,8 +1,15 @@
+/*
+File: MainTest.java
+Author: Ethan J. Nephew
+Date due: April 4, 2021
+Course: CEN-3024C
+Description: I added all the unit tests to this singular test file. It just makes more sense to run them all from a singular location.
+*/
+
 package WordCounter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

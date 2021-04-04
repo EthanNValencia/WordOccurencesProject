@@ -1,3 +1,11 @@
+/*
+File: Connect.java
+Author: Ethan J. Nephew
+Date due: April 4, 2021
+Course: CEN-3024C
+Description: Class that is used to establish the db connection and read and write to the db.
+*/
+
 package WordCounter;
 
 import java.sql.Connection;
