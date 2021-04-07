@@ -8,17 +8,15 @@ Description: This class is used to control the GUI and associate GUI components 
 
 package WordCounter;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,8 +37,22 @@ public class Controller implements CONSTANTS, Initializable {
     private Button countBtn;
     @FXML
     private Label labelExplain;
+    @FXML
+    private Button connect;
+    @FXML
+    private Button noConnect;
+    @FXML
+    private Button submitBtn;
+    @FXML
+    private TextField ipEntry;
+    @FXML
+    private Button restartBtn;
 
     private String displayContent;
+    private String hostIPAddress = "";
+    DataOutputStream toServer = null;
+    DataInputStream fromServer = null;
+
 
     public void displayToLabel(String name, int count){
         displayContent = displayContent.concat(name + " " + count + ", ");
@@ -54,8 +66,8 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void downloadPage() throws FileNotFoundException {
         labelExplain.setText(
-                "The text has been downloaded.\n" +
-                "Continue to text normalization.\n" +
+                "The text has been downloaded. " +
+                "Continue to text normalization. " +
                 "Use the Clean Text button to continue.");
         beginBtn.setDisable(true);
         WebSaver.writePageToFile();
@@ -69,8 +81,8 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void cleanText() {
         labelExplain.setText(
-                "The text has been cleaned. \n" +
-                "Continue by inserting, extracting, and displaying the data. \n" +
+                "The text has been cleaned. " +
+                "Continue by inserting, extracting, and displaying the data. " +
                 "Continue by clicking the Count Words button.");
         cleanBtn.setDisable(true);
         StringCleaner sc = new StringCleaner();
@@ -90,8 +102,8 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void countWords() throws IOException {
         labelExplain.setText(
-                "The words have been counted. \n" +
-                "This is a list of the words ranked from highest to lowest.\n" +
+                "The words have been counted. " +
+                "This is a list of the words ranked from highest to lowest. " +
                 "You may re-run the program with the Download HTML button");
         countBtn.setDisable(true);
         WordCounter wc = new WordCounter();
@@ -131,12 +143,95 @@ public class Controller implements CONSTANTS, Initializable {
      * @param resources The resources that are used on the root object.
      */
     public void initialize(URL location, ResourceBundle resources){
+        initButtons();
+    }
+
+    /***
+     * I migrated the initialize method contents to another method, because I wanted to extend the initialize functionality to the restart button.
+     */
+    public void initButtons(){
+        cleanBtn.setVisible(false);
+        countBtn.setVisible(false);
+        textArea.setVisible(false);
+        beginBtn.setVisible(false);
+        ipEntry.setVisible(false);
+        submitBtn.setVisible(false);
+        connect.setVisible(true);
+        noConnect.setVisible(true);
+        labelExplain.setText(
+                "If you have the server running and you wish to connect click: Connect " +
+                        "If you wish to run without the server click: Do Not Connect");
+    }
+
+    /***
+     * If the user decides to not connect, then the application will run without the server support.
+     */
+    public void doNotConnect(){
+        connect.setVisible(false);
+        noConnect.setVisible(false);
+        cleanBtn.setVisible(true);
+        countBtn.setVisible(true);
+        textArea.setVisible(true);
+        beginBtn.setVisible(true);
         cleanBtn.setDisable(true);
         countBtn.setDisable(true);
         labelExplain.setText(
-                "Begin by downloading the web page source document.\n" +
+                "Begin by downloading the web page source document. " +
                         "Click the Download HTML button");
         textArea.setEditable(false);
         textArea.setWrapText(true);
+    }
+
+    /***
+     * If the user decides to connect to a server, then they will be required to enter the IP address to connect to the server.
+     */
+    public void getIP(){
+        connect.setVisible(false);
+        noConnect.setVisible(false);
+        labelExplain.setText(
+                "Please enter the IP address of the server. " +
+                "\nThis will be supplied to you in the server user interface.");
+        submitBtn.setVisible(true);
+        ipEntry.setVisible(true);
+    }
+
+    /***
+     * This method will begin the connection process and catch the exception if the connection fails.
+     */
+    public void beginConnection(){
+        try {
+            attemptServerConnection();
+        } catch (IOException e) {
+            labelExplain.setText("The IP address you have entered in incorrect. Please Try again. \n" +
+                    "If you are running the server on a different computer, " +
+                    "then you may need to change your firewall settings.");
+        }
+    }
+
+// 192.168.0.95
+
+    /***
+     * This is the actual client method that connects to the server. It will connect and the server will send the client the string.
+     * @throws IOException Input/Output exception could be thrown.
+     */
+    public void attemptServerConnection() throws IOException {
+        Socket socket = new Socket(ipEntry.getText(), 8000);
+        ipEntry.setVisible(false);
+        submitBtn.setVisible(false);
+        InputStream inputStream = socket.getInputStream();
+        DataInputStream dataInputStream = new DataInputStream(inputStream);
+        String list = dataInputStream.readUTF();
+        socket.close();
+        textArea.setWrapText(true);
+        textArea.setText(list);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        textArea.setVisible(true);
+        labelExplain.setText("Your client application has received the textual data from the server.");
     }
 }
