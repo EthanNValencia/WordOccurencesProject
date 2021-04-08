@@ -8,6 +8,7 @@ Description: This class is used to control the GUI and associate GUI components 
 
 package WordCounter;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -46,7 +47,7 @@ public class Controller implements CONSTANTS, Initializable {
     @FXML
     private TextField ipEntry;
     @FXML
-    private Button restartBtn;
+    private Button restartBtn, quitBtn;
 
     private String displayContent;
     private String hostIPAddress = "";
@@ -234,4 +235,10 @@ public class Controller implements CONSTANTS, Initializable {
         textArea.setVisible(true);
         labelExplain.setText("Your client application has received the textual data from the server.");
     }
+
+    public void quitSystem(){
+        Platform.exit();
+        System.exit(0);
+    }
+
 }

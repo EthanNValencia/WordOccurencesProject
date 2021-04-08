@@ -19,6 +19,6 @@
       <Button fx:id="submitBtn" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" onAction="#beginConnection" text="Submit IP Address" />
       <TextField fx:id="ipEntry" layoutX="14.0" layoutY="333.0" prefHeight="25.0" prefWidth="216.0" promptText="Enter IP Address..." />
       <Button fx:id="restartBtn" layoutX="833.0" layoutY="362.0" mnemonicParsing="false" onAction="#initButtons" text="Restart" />
-      <Button layoutX="847.0" layoutY="10.0" mnemonicParsing="false" text="Quit" />
+      <Button fx:id="quitBtn" layoutX="847.0" layoutY="6.0" mnemonicParsing="false" onAction="#quitSystem" text="Quit" />
    </children>
 </AnchorPane>
