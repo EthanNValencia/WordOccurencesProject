@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import javafx.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
@@ -52,12 +53,12 @@ public class Controller implements CONSTANTS, Initializable {
     @FXML
     private Button restartBtn, quitBtn;
     @FXML
-    private Button option1, option2, option3, helpCenterBtn;
+    private Button option1, option2, option3, helpCenterBtn, opt2Next, opt2Back;
 
     @FXML
     private ImageView imageView;
 
-
+    private int helpCenterIndex = 0;
     private String displayContent;
     private String hostIPAddress = "";
     DataOutputStream toServer = null;
@@ -162,6 +163,8 @@ public class Controller implements CONSTANTS, Initializable {
      * I migrated the initialize method contents to another method, because I wanted to extend the initialize functionality to the restart button.
      */
     public void initButtons(){
+        opt2Next.setVisible(false);
+        opt2Back.setVisible(false);
         option1.setVisible(false);
         option2.setVisible(false);
         option3.setVisible(false);
@@ -222,6 +225,8 @@ public class Controller implements CONSTANTS, Initializable {
         try {
             attemptServerConnection();
         } catch (IOException e) {
+            imageView.setVisible(false);
+            helpCenterBtn.setVisible(false);
             option1.setVisible(true);
             option2.setVisible(true);
             option3.setVisible(true);
@@ -235,6 +240,24 @@ public class Controller implements CONSTANTS, Initializable {
         }
     }
 
+    public void returnToHelpCenter(){
+        opt2Next.setVisible(false);
+        opt2Back.setVisible(false);
+        helpCenterBtn.setVisible(false);
+        imageView.setVisible(false);
+        option1.setVisible(true);
+        option2.setVisible(true);
+        option3.setVisible(true);
+        labelExplain.setTextFill(Color.color(1, 0, 0));
+        labelExplain.setText("-- HELP CENTER --\n\n" +
+                "A problem has occurred. The Client has not connected to the Server.\n\n" +
+                "-- Possible Causes --\n\n" +
+                "1. The IP address you have entered in incorrect. Please enter the IP address that is provided on the Server interface. \n\n" +
+                "2. If you are running the server on a different computer, then you may need to change your firewall settings. \n\n" +
+                "3. If you are running the server on a different computer, then you may be required to forward the port.");
+
+    }
+
 // 192.168.0.95
 
     /***
@@ -244,7 +267,7 @@ public class Controller implements CONSTANTS, Initializable {
     public void attemptServerConnection() throws IOException {
         Socket socket = new Socket(ipEntry.getText(), 8000);
         ipEntry.setVisible(false);
-        submitBtn.setVisible(false);
+        helpCenterBtn.setVisible(false);
         InputStream inputStream = socket.getInputStream();
         DataInputStream dataInputStream = new DataInputStream(inputStream);
         String list = dataInputStream.readUTF();
@@ -268,12 +291,101 @@ public class Controller implements CONSTANTS, Initializable {
         System.exit(0);
     }
 
+    public void setHelpOptionsInvisible(){
+        option1.setVisible(false);
+        option2.setVisible(false);
+        option3.setVisible(false);
+        helpCenterBtn.setVisible(false);
+    }
+
     public void helpCenter_Option1(){
+        setHelpOptionsInvisible();
         labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText("Your client application has received the textual data from the server.");
+        labelExplain.setText("This is an example of what the Server IP address will look like in the Server interface. \n" +
+                "Please enter your Server's IP address into the text field and submit it.");
         Image image = new Image("WordCounter/JavaProjectHelpImages/Option1pic1.png");
         imageView.setVisible(true);
         imageView.setImage(image);
+        helpCenterBtn.setVisible(true);
     }
+
+    public void helpCenter_Option2(ActionEvent event){
+        boolean go = true;
+        if (event.getSource().equals(option2)) {
+            helpCenterIndex = 1;
+            opt2Next.setVisible(true);
+            opt2Back.setVisible(true);
+        } else if (event.getSource().equals(opt2Next)){
+            helpCenterIndex++;
+        } else if (event.getSource().equals(opt2Back)){
+            helpCenterIndex--;
+        }
+
+        while(go){
+            setHelpOptionsInvisible();
+            labelExplain.setTextFill(Color.color(0, 0, 0));
+            labelExplain.setText(getNextOption(helpCenterIndex));
+            Image image = new Image("WordCounter/JavaProjectHelpImages/Option2pic" + helpCenterIndex + ".png");
+            imageView.setVisible(true);
+            imageView.setImage(image);
+            helpCenterBtn.setVisible(true);
+            go = false;
+        }
+    }
+
+    public String getNextOption(int position){
+        if (position == 1){
+            opt2Back.setVisible(true);
+            opt2Back.setDisable(true);
+            opt2Next.setVisible(true);
+            opt2Next.setDisable(false);
+        } else if (position > 1 && position < 13){
+            opt2Back.setVisible(true);
+            opt2Back.setDisable(false);
+            opt2Next.setVisible(true);
+            opt2Next.setDisable(false);
+        } else if (position == 13){
+            opt2Back.setVisible(true);
+            opt2Back.setDisable(false);
+            opt2Next.setVisible(true);
+            opt2Next.setDisable(true);
+        }
+        return getHelpMessage(position);
+    }
+
+    public String getHelpMessage(int position){
+        if (position == 1){
+            return "Begin by searching windows defender firewall in your start menu.";
+        } else if (position == 2){
+            return "Select Advanced settings.";
+        } else if (position == 3){
+            return "Create new Inbound Rule by selecting New Rule.";
+        } else if (position == 4){
+            return "Select Port and click next.";
+        } else if (position == 5 || position == 10){
+            return "Select TCP and specify the port number of 8000.";
+        } else if (position == 6 || position == 11){
+            return "Allow the connection.";
+        } else if (position == 7 || position == 12){
+            return "If you are running this software on a home network then select Private.";
+        } else if (position == 8 || position == 13){
+            return "Create a name and description. Your name and description does not need to be exactly what I wrote. Click finish to create the new rule.";
+        } else if (position == 9){
+            return "Next create a new Outbound Rule.";
+        }
+        return null;
+    }
+
+    public void helpCenter_Option3(){
+        setHelpOptionsInvisible();
+        labelExplain.setTextFill(Color.color(0, 0, 0));
+        labelExplain.setText("Port forwarding is difficult and can vary between routers. Generally, the user will be presented with a screen similar to this.\n " +
+                "It is important that you forward port 8000.");
+        Image image = new Image("WordCounter/JavaProjectHelpImages/Option3pic1.png");
+        imageView.setVisible(true);
+        imageView.setImage(image);
+        helpCenterBtn.setVisible(true);
+    }
+
 
 }
