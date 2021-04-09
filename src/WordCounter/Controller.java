@@ -240,6 +240,9 @@ public class Controller implements CONSTANTS, Initializable {
         }
     }
 
+    /***
+     * This method displays the help center menu buttons as well as supportive text. It deactivates and activates various buttons.
+     */
     public void returnToHelpCenter(){
         opt2Next.setVisible(false);
         opt2Back.setVisible(false);
@@ -286,11 +289,17 @@ public class Controller implements CONSTANTS, Initializable {
         labelExplain.setText("Your client application has received the textual data from the server.");
     }
 
+    /***
+     * This is used to safely terminate the system.
+     */
     public void quitSystem(){
         Platform.exit();
         System.exit(0);
     }
 
+    /***
+     * This is used to set the help options to invisible.
+     */
     public void setHelpOptionsInvisible(){
         option1.setVisible(false);
         option2.setVisible(false);
@@ -298,6 +307,9 @@ public class Controller implements CONSTANTS, Initializable {
         helpCenterBtn.setVisible(false);
     }
 
+    /***
+     * This method is used to navigate the option 1 of the help center menu.
+     */
     public void helpCenter_Option1(){
         setHelpOptionsInvisible();
         labelExplain.setTextFill(Color.color(0, 0, 0));
@@ -309,6 +321,9 @@ public class Controller implements CONSTANTS, Initializable {
         helpCenterBtn.setVisible(true);
     }
 
+    /***
+     * This method is used to navigate the option 2 of the help center menu.
+     */
     public void helpCenter_Option2(ActionEvent event){
         boolean go = true;
         if (event.getSource().equals(option2)) {
@@ -333,6 +348,11 @@ public class Controller implements CONSTANTS, Initializable {
         }
     }
 
+    /***
+     * This is used to switch between option 2 sections in the help center.
+     * @param position It requires the position index.
+     * @return It returns a string that will be assigned to the label.
+     */
     public String getNextOption(int position){
         if (position == 1){
             opt2Back.setVisible(true);
@@ -353,6 +373,11 @@ public class Controller implements CONSTANTS, Initializable {
         return getHelpMessage(position);
     }
 
+    /***
+     * This is a series of conditions that are used to determine what text will be displayed when navigating the option 2 help center.
+     * @param position It requires the position of the index in the option 2 help center.
+     * @return It returns the label that is associated with the provided index.
+     */
     public String getHelpMessage(int position){
         if (position == 1){
             return "Begin by searching windows defender firewall in your start menu.";
@@ -376,6 +401,9 @@ public class Controller implements CONSTANTS, Initializable {
         return null;
     }
 
+    /***
+     * This method is used to navigate the option 3 of the help center menu.
+     */
     public void helpCenter_Option3(){
         setHelpOptionsInvisible();
         labelExplain.setTextFill(Color.color(0, 0, 0));
