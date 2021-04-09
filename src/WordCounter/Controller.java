@@ -271,6 +271,7 @@ public class Controller implements CONSTANTS, Initializable {
         Socket socket = new Socket(ipEntry.getText(), 8000);
         ipEntry.setVisible(false);
         helpCenterBtn.setVisible(false);
+        submitBtn.setVisible(false);
         InputStream inputStream = socket.getInputStream();
         DataInputStream dataInputStream = new DataInputStream(inputStream);
         String list = dataInputStream.readUTF();
