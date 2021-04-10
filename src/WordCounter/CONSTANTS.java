@@ -42,4 +42,14 @@ public interface CONSTANTS {
      * This is the array of chars that the program will delete during the text normalization process.
      */
     char[] charArray = {'”', ',', '.', '\'', ';', '\"', '!', '?', '“'};
+    /***
+     * Help center text.
+     */
+    String helpCenterText = "-- HELP CENTER --\n" +
+            "A problem has occurred. The Client has not connected to the Server.\n" +
+            "-- Possible Causes --\n" +
+            "1. The IP address you have entered in incorrect. Please enter the IP address that is provided on the Server interface. \n" +
+            "2. If you are running the server on a different computer, then you may need to change your firewall settings. \n" +
+            "3. If you are running the server on a different computer, then you may be required to forward the port.\n" +
+            "Additionally, if you are running the Server and Client on the same computer, then use localhost as the connect parameter.";
 }

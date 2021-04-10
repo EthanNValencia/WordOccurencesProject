@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
         primaryStage.setTitle("Word Counter Program");
-        primaryStage.setScene(new Scene(root, 900, 400));
+        primaryStage.setScene(new Scene(root, 900, 450));
         primaryStage.show();
     }
 

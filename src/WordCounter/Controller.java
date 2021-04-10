@@ -18,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-
 import javafx.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
@@ -35,13 +34,13 @@ public class Controller implements CONSTANTS, Initializable {
     @FXML
     private TextArea textArea;
     @FXML
+    private TextArea textExplain;
+    @FXML
     private Button beginBtn;
     @FXML
     private Button cleanBtn;
     @FXML
     private Button countBtn;
-    @FXML
-    private Label labelExplain;
     @FXML
     private Button connect;
     @FXML
@@ -76,8 +75,7 @@ public class Controller implements CONSTANTS, Initializable {
      * @throws FileNotFoundException A file not found exception is a critical application failure. The application cannot continue.
      */
     public void downloadPage() throws FileNotFoundException {
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText(
+        textExplain.setText(
                 "The text has been downloaded. " +
                 "Continue to text normalization. " +
                 "Use the Clean Text button to continue.");
@@ -92,8 +90,7 @@ public class Controller implements CONSTANTS, Initializable {
      * This method controls GUI functions by disabling the clean button, enabling the count button, sets the explanation label, and displays the cleaned/normalized text to the text area. It calls the method that handles the text normalization.
      */
     public void cleanText() {
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText(
+        textExplain.setText(
                 "The text has been cleaned. " +
                 "Continue by inserting, extracting, and displaying the data. " +
                 "Continue by clicking the Count Words button.");
@@ -114,7 +111,7 @@ public class Controller implements CONSTANTS, Initializable {
      * @throws FileNotFoundException A file not found exception is a critical application failure. The application cannot continue.
      */
     public void countWords() throws IOException {
-        labelExplain.setText(
+        textExplain.setText(
                 "The words have been counted. " +
                 "This is a list of the words ranked from highest to lowest. " +
                 "You may re-run the program with the Download HTML button");
@@ -163,6 +160,7 @@ public class Controller implements CONSTANTS, Initializable {
      * I migrated the initialize method contents to another method, because I wanted to extend the initialize functionality to the restart button.
      */
     public void initButtons(){
+        textExplain.setWrapText(true);
         opt2Next.setVisible(false);
         opt2Back.setVisible(false);
         option1.setVisible(false);
@@ -178,9 +176,8 @@ public class Controller implements CONSTANTS, Initializable {
         submitBtn.setVisible(false);
         connect.setVisible(true);
         noConnect.setVisible(true);
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText(
-                "If you have the server running and you wish to connect click: Connect " +
+        textExplain.setText(
+                "If you have the server running and you wish to connect click: Connect \n" +
                         "If you wish to run without the server click: Do Not Connect");
     }
 
@@ -196,8 +193,7 @@ public class Controller implements CONSTANTS, Initializable {
         beginBtn.setVisible(true);
         cleanBtn.setDisable(true);
         countBtn.setDisable(true);
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText(
+        textExplain.setText(
                 "Begin by downloading the web page source document. " +
                         "Click the Download HTML button");
         textArea.setEditable(false);
@@ -210,10 +206,9 @@ public class Controller implements CONSTANTS, Initializable {
     public void getIP(){
         connect.setVisible(false);
         noConnect.setVisible(false);
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText(
+        textExplain.setText(
                 "Please enter the IP address of the server. " +
-                "\nThis will be supplied to you in the server user interface.");
+                "This will be supplied to you in the server user interface.");
         submitBtn.setVisible(true);
         ipEntry.setVisible(true);
     }
@@ -230,13 +225,7 @@ public class Controller implements CONSTANTS, Initializable {
             option1.setVisible(true);
             option2.setVisible(true);
             option3.setVisible(true);
-            labelExplain.setTextFill(Color.color(1, 0, 0));
-            labelExplain.setText("-- HELP CENTER --\n\n" +
-                    "A problem has occurred. The Client has not connected to the Server.\n\n" +
-                    "-- Possible Causes --\n\n" +
-                    "1. The IP address you have entered in incorrect. Please enter the IP address that is provided on the Server interface. \n\n" +
-                    "2. If you are running the server on a different computer, then you may need to change your firewall settings. \n\n" +
-                    "3. If you are running the server on a different computer, then you may be required to forward the port.");
+            textExplain.setText(helpCenterText);
         }
     }
 
@@ -251,13 +240,7 @@ public class Controller implements CONSTANTS, Initializable {
         option1.setVisible(true);
         option2.setVisible(true);
         option3.setVisible(true);
-        labelExplain.setTextFill(Color.color(1, 0, 0));
-        labelExplain.setText("-- HELP CENTER --\n\n" +
-                "A problem has occurred. The Client has not connected to the Server.\n\n" +
-                "-- Possible Causes --\n\n" +
-                "1. The IP address you have entered in incorrect. Please enter the IP address that is provided on the Server interface. \n\n" +
-                "2. If you are running the server on a different computer, then you may need to change your firewall settings. \n\n" +
-                "3. If you are running the server on a different computer, then you may be required to forward the port.");
+        textExplain.setText(helpCenterText);
 
     }
 
@@ -286,8 +269,7 @@ public class Controller implements CONSTANTS, Initializable {
         }
 
         textArea.setVisible(true);
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText("Your client application has received the textual data from the server.");
+        textExplain.setText("Your client application has received the textual data from the server.");
     }
 
     /***
@@ -313,8 +295,7 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void helpCenter_Option1(){
         setHelpOptionsInvisible();
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText("This is an example of what the Server IP address will look like in the Server interface. \n" +
+        textExplain.setText("This is an example of what the Server IP address will look like in the Server interface. " +
                 "Please enter your Server's IP address into the text field and submit it.");
         Image image = new Image("WordCounter/JavaProjectHelpImages/Option1pic1.png");
         imageView.setVisible(true);
@@ -327,6 +308,7 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void helpCenter_Option2(ActionEvent event){
         boolean go = true;
+
         if (event.getSource().equals(option2)) {
             helpCenterIndex = 1;
             opt2Next.setVisible(true);
@@ -339,8 +321,7 @@ public class Controller implements CONSTANTS, Initializable {
 
         while(go){
             setHelpOptionsInvisible();
-            labelExplain.setTextFill(Color.color(0, 0, 0));
-            labelExplain.setText(getNextOption(helpCenterIndex));
+            textExplain.setText(getNextOption(helpCenterIndex));
             Image image = new Image("WordCounter/JavaProjectHelpImages/Option2pic" + helpCenterIndex + ".png");
             imageView.setVisible(true);
             imageView.setImage(image);
@@ -407,8 +388,8 @@ public class Controller implements CONSTANTS, Initializable {
      */
     public void helpCenter_Option3(){
         setHelpOptionsInvisible();
-        labelExplain.setTextFill(Color.color(0, 0, 0));
-        labelExplain.setText("Port forwarding is difficult and can vary between routers. Generally, the user will be presented with a screen similar to this.\n " +
+        textExplain.setText("Port forwarding is difficult and can vary between routers. " +
+                "Generally, the user will be presented with a screen similar to this. " +
                 "It is important that you forward port 8000.");
         Image image = new Image("WordCounter/JavaProjectHelpImages/Option3pic1.png");
         imageView.setVisible(true);
