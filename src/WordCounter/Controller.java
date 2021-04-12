@@ -12,12 +12,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
@@ -114,12 +112,13 @@ public class Controller implements CONSTANTS, Initializable {
         textExplain.setText(
                 "The words have been counted. " +
                 "This is a list of the words ranked from highest to lowest. " +
-                "You may re-run the program with the Download HTML button");
+                "You may re-run the program with the Download HTML button. Alternatively, you may click the Restart button to connect to the server.");
         countBtn.setDisable(true);
         WordCounter wc = new WordCounter();
         wc.countTheWords();
         ArrayList<Word> displayList = new ArrayList<Word>();
         try {
+            Connect.deleteArtifacts();
             displayList = Connect.getList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -304,7 +303,8 @@ public class Controller implements CONSTANTS, Initializable {
     }
 
     /***
-     * This method is used to navigate the option 2 of the help center menu.
+     * This method is used to navigate the option 1 of the help center menu.
+     * @param event This function can be caused by two controls, so it requires the event parameter to differentiate origins.
      */
     public void helpCenter_Option2(ActionEvent event){
         boolean go = true;

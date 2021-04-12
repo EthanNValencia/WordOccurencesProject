@@ -136,4 +136,23 @@ public class Connect {
             ps.executeUpdate();
         }
     }
+
+    /***
+     * When I run the program as a .jar, during the database writing portion, it seems that there are textual artifacts that are being generated. This method deletes those objects.
+     * @throws Exception This method will throw an exception, especially if something goes wrong during the db connection and updating processes.
+     */
+    public static void deleteArtifacts() throws Exception {
+        Connection con = getConnection();
+        assert con != null;
+        String sql = "UPDATE word SET word_name=REPLACE(word_name,'�',''), \n" +
+                "word_name=REPLACE(word_name,'Â€',''),\n" +
+                "word_name=REPLACE(word_name,'Œ',''),\n" +
+                "word_name=REPLACE(word_name,'™','');";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.executeUpdate();
+        String sqlDelete = "DELETE FROM word WHERE word_name='' OR word_name IS NULL;";
+        ps = con.prepareStatement(sqlDelete);
+        ps.executeUpdate();
+
+    }
 }
