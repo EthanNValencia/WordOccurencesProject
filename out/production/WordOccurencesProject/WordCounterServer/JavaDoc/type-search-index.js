@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"WordCounterServer","l":"Connect"},{"p":"WordCounterServer","l":"CONSTANTS"},{"p":"WordCounterServer","l":"Server"},{"p":"WordCounterServer","l":"StringCleaner"},{"p":"WordCounterServer","l":"WebSaver"},{"p":"WordCounterServer","l":"Word"},{"p":"WordCounterServer","l":"WordCounter"}]
